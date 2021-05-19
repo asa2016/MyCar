@@ -38,6 +38,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  assets:
+    - assets/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -74,3 +76,14 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  fonts:
+    - family: Cairo
+      fonts:
+        - asset: fonts/Cairo-Regular.ttf
+        - asset: fonts/Cairo-Bold.ttf
+        - asset: fonts/Cairo-Black.ttf
+        - asset: fonts/Cairo-ExtraLight.ttf
+        - asset: fonts/Cairo-Light.ttf
+        - asset: fonts/Cairo-SemiBold.ttf
+
