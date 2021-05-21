@@ -1,50 +1,12 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 
 class MainPage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
 }
 
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate({
-    @required this.minHeight,
-    @required this.maxHeight,
-    @required this.child,
-  });
-
-  final double minHeight;
-  final double maxHeight;
-  final Widget child;
-
-  @override
-  double get minExtent => minHeight;
-
-  @override
-  double get maxExtent => math.max(maxHeight, minHeight);
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return child;
-  }
-
-  @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return maxHeight != oldDelegate.maxHeight ||
-        minHeight != oldDelegate.minHeight ||
-        child != oldDelegate.child;
-  }
-}
-
 class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   TabController _tabController;
-  List<CarStation> _carStations = [
-    CarStation('الناصر للسيارات', 'assets/alnasrCars.jpg', true),
-    CarStation('الناصر للسيارات', 'assets/alnasrCars.jpg', true),
-    CarStation('الناصر للسيارات', 'assets/alnasrCars.jpg', true),
-    CarStation('الناصر للسيارات', 'assets/alnasrCars.jpg', true),
-  ];
 
   @override
   void initState() {
@@ -54,15 +16,12 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> _tabs = ['Tab 1', 'Tab 2'];
-    bool _pinned = true;
-    bool _snap = true;
-    bool _floating = true;
 
     return Scaffold(
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.orange[200],
       appBar: AppBar(
-        title: Text('سيارتي'),
+        backgroundColor: Colors.orange[200],
+        title: Text('سيارتي',style: TextStyle(fontWeight: FontWeight.w700),),
         elevation: 0,
         actions: [
           IconButton(
@@ -72,10 +31,17 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             ),
             onPressed: () {},
           ),
+          IconButton(
+            icon: Icon(
+              Icons.person_rounded,
+              size: 32.0,
+            ),
+            onPressed: () {},
+          ),
         ],
       ),
       body: Container(
-        margin: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
+        margin: EdgeInsets.only(top: 5.0),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -86,37 +52,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 20.0, 0.0),
-                      child: Text(
-                        'أوقات الدوام من الساعة 08:00ص حتى 09:00م',
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 80.0,
-                    height: 40.0,
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(60.0),
-                        bottomRight: Radius.circular(40.0),
-                      ),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'مفتوح',
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
-              ),
-            ),
             Expanded(
               child: NestedScrollView(
                 floatHeaderSlivers: true,
@@ -128,13 +63,14 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                         height: MediaQuery.of(context).size.height * 0.3,
                         margin: EdgeInsets.fromLTRB(7.0, 10.0, 7.0, 10.0),
                         child: ListView(
-                      scrollDirection: Axis.horizontal,
+                          scrollDirection: Axis.horizontal,
                           children: [
                             Container(
                               margin: EdgeInsets.all(10.0),
                               decoration: BoxDecoration(
                                 color: Colors.blue,
-                                borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15.0)),
                               ),
                               width: 350,
                             ),
@@ -169,7 +105,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                           ),
                         ],
                         controller: _tabController,
-                        labelColor: Colors.red,
+                        labelColor: Colors.blue[400],
                       ),
                     ),
                   ];
@@ -189,23 +125,31 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                             ),
                             title:
                                 Text(CarStation.carStations[index].stationName),
-                          trailing: Container(
-                            width: 80.0,
-                            height: 32.0,
-                            decoration: BoxDecoration(
-                              color: CarStation.carStations[index].openState ? Colors.amber:Colors.red,
-                              borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(17.0),
-                                bottomLeft:  Radius.circular(17.0),
+                            trailing: Container(
+                              width: 80.0,
+                              height: 32.0,
+                              decoration: BoxDecoration(
+                                color: CarStation.carStations[index].openState
+                                    ? Colors.amber
+                                    : Colors.red,
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(17.0),
+                                  bottomLeft: Radius.circular(17.0),
+                                ),
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                CarStation.carStations[index].openState
+                                    ? 'مفتوح'
+                                    : 'مغلق',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color:
+                                        CarStation.carStations[index].openState
+                                            ? Colors.black
+                                            : Colors.white),
                               ),
                             ),
-                            alignment: Alignment.center,
-                            child: Text(
-                              CarStation.carStations[index].openState ? 'مفتوح':'مغلق',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: CarStation.carStations[index].openState ? Colors.black:Colors.white),
-                            ),
-                          ),
                           );
                         },
                         separatorBuilder: (context, index) => Divider(),
@@ -222,22 +166,30 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                               fit: BoxFit.contain,
                             ),
                             title:
-                            Text(CarStation.carStations[index].stationName),
+                                Text(CarStation.carStations[index].stationName),
                             trailing: Container(
                               width: 80.0,
                               height: 32.0,
                               decoration: BoxDecoration(
-                                color: CarStation.carStations[index].openState ? Colors.amber:Colors.red,
+                                color: CarStation.carStations[index].openState
+                                    ? Colors.amber
+                                    : Colors.red,
                                 borderRadius: BorderRadius.only(
                                   bottomRight: Radius.circular(17.0),
-                                  bottomLeft:  Radius.circular(17.0),
+                                  bottomLeft: Radius.circular(17.0),
                                 ),
                               ),
                               alignment: Alignment.center,
                               child: Text(
-                                CarStation.carStations[index].openState ? 'مفتوح':'مغلق',
+                                CarStation.carStations[index].openState
+                                    ? 'مفتوح'
+                                    : 'مغلق',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(color: CarStation.carStations[index].openState ? Colors.black:Colors.white),
+                                style: TextStyle(
+                                    color:
+                                        CarStation.carStations[index].openState
+                                            ? Colors.black
+                                            : Colors.white),
                               ),
                             ),
                           );
@@ -261,32 +213,56 @@ class CarStation {
   String imageURL;
   bool openState;
 
-  CarStation(this.stationName, this.imageURL, this.openState);
+  CarStation({this.stationName, this.imageURL, this.openState});
 
   static List<CarStation> get carStations => [
-        CarStation('معرض الناصر كارس', 'assets/alnasrCars.jpg', true),
-        CarStation('معرض الأندلس للسيارات', 'assets/andalusCars.jpg', false),
-        CarStation('معرض DRC للسيارات', 'assets/drcCars.jpg', true),
-        CarStation('معرض OTO Show للسيارات', 'assets/otoshowCars.jpg', false),
-        CarStation('معرض الناصر كارس', 'assets/alnasrCars.jpg', true),
-        CarStation('معرض الأندلس للسيارات', 'assets/andalusCars.jpg', false),
-        CarStation('معرض DRC للسيارات', 'assets/drcCars.jpg', true),
-        CarStation('معرض OTO Show للسيارات', 'assets/otoshowCars.jpg', false),
-        CarStation('معرض الناصر كارس', 'assets/alnasrCars.jpg', true),
-        CarStation('معرض الأندلس للسيارات', 'assets/andalusCars.jpg', false),
-        CarStation('معرض DRC للسيارات', 'assets/drcCars.jpg', true),
-        CarStation('معرض OTO Show للسيارات', 'assets/otoshowCars.jpg', false),
-        CarStation('معرض الناصر كارس', 'assets/alnasrCars.jpg', true),
-        CarStation('معرض الأندلس للسيارات', 'assets/andalusCars.jpg', false),
-        CarStation('معرض DRC للسيارات', 'assets/drcCars.jpg', true),
-        CarStation('معرض OTO Show للسيارات', 'assets/otoshowCars.jpg', false),
-        CarStation('معرض الناصر كارس', 'assets/alnasrCars.jpg', true),
-        CarStation('معرض الأندلس للسيارات', 'assets/andalusCars.jpg', false),
-        CarStation('معرض DRC للسيارات', 'assets/drcCars.jpg', true),
-        CarStation('معرض OTO Show للسيارات', 'assets/otoshowCars.jpg', false),
-        CarStation('معرض الناصر كارس', 'assets/alnasrCars.jpg', true),
-        CarStation('معرض الأندلس للسيارات', 'assets/andalusCars.jpg', false),
-        CarStation('معرض DRC للسيارات', 'assets/drcCars.jpg', true),
-        CarStation('معرض OTO Show للسيارات', 'assets/otoshowCars.jpg', false),
+    CarStation(
+            stationName: 'معرض الناصر كارس',
+            imageURL: 'assets/alnasrCars.jpg',
+            openState: true),
+    CarStation(
+            stationName: 'معرض الأندلس للسيارات',
+            imageURL: 'assets/andalusCars.jpg',
+            openState: false),
+    CarStation(
+            stationName: 'معرض DRC للسيارات',
+            imageURL: 'assets/drcCars.jpg',
+            openState: true),
+    CarStation(
+            stationName: 'معرض OTO Show للسيارات',
+            imageURL: 'assets/otoshowCars.jpg',
+            openState: false),
+    CarStation(
+        stationName: 'معرض الناصر كارس',
+        imageURL: 'assets/alnasrCars.jpg',
+        openState: true),
+    CarStation(
+        stationName: 'معرض الأندلس للسيارات',
+        imageURL: 'assets/andalusCars.jpg',
+        openState: false),
+    CarStation(
+        stationName: 'معرض DRC للسيارات',
+        imageURL: 'assets/drcCars.jpg',
+        openState: true),
+    CarStation(
+        stationName: 'معرض OTO Show للسيارات',
+        imageURL: 'assets/otoshowCars.jpg',
+        openState: false),
+    CarStation(
+        stationName: 'معرض الناصر كارس',
+        imageURL: 'assets/alnasrCars.jpg',
+        openState: true),
+    CarStation(
+        stationName: 'معرض الأندلس للسيارات',
+        imageURL: 'assets/andalusCars.jpg',
+        openState: false),
+    CarStation(
+        stationName: 'معرض DRC للسيارات',
+        imageURL: 'assets/drcCars.jpg',
+        openState: true),
+    CarStation(
+        stationName: 'معرض OTO Show للسيارات',
+        imageURL: 'assets/otoshowCars.jpg',
+        openState: false),
       ];
 }

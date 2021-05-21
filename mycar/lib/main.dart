@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       debugShowMaterialGrid: false,
       title: 'سيارتي',
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.orange,
         fontFamily: 'Cairo',
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
