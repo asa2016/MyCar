@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mycar/models/store.dart';
-import 'package:mycar/services/store_srv.dart';
-import 'package:mycar/ui/style_res.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -10,39 +7,21 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   TabController _tabController;
-  final StoreServices _storeServices = StoreServices();
-
-  List<Store> _stores = [];
-  List<Store> _newStores = [];
 
   @override
   void initState() {
-    var now = DateTime.now();
-    var earlier = now.subtract(Duration(days: 15));
-
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
-    _storeServices.getAllStores().then((value) {
-      //value.map((e) => print(e.toString())).toList();
-      setState(() {
-        _stores = value;
-        _newStores = value
-            .where((store) => DateTime.parse(store.registered).isAfter(earlier))
-            .toList();
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.orange[200],
       appBar: AppBar(
         backgroundColor: Colors.orange[200],
-        title: Text(
-          'سيارتي',
-          style: TextStyle(fontWeight: FontWeight.w700),
-        ),
+        title: Text('سيارتي',style: TextStyle(fontWeight: FontWeight.w700),),
         elevation: 0,
         actions: [
           IconButton(
@@ -136,18 +115,23 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                     ListView.separated(
                         itemBuilder: (context, index) {
                           return ListTile(
-                            leading: Image.network(
-                              _stores[index].gravatar,
+                            leading: Image(
+                              image: AssetImage(
+                                CarStation.carStations[index].imageURL,
+                              ),
                               height: 65,
                               width: 65,
                               fit: BoxFit.contain,
                             ),
-                            title: Text(_stores[index].storeName),
+                            title:
+                                Text(CarStation.carStations[index].stationName),
                             trailing: Container(
-                              width: 100.0,
+                              width: 80.0,
                               height: 32.0,
                               decoration: BoxDecoration(
-                                color: StyleRso.secondaryLightColor,
+                                color: CarStation.carStations[index].openState
+                                    ? Colors.amber
+                                    : Colors.red,
                                 borderRadius: BorderRadius.only(
                                   bottomRight: Radius.circular(17.0),
                                   bottomLeft: Radius.circular(17.0),
@@ -155,29 +139,41 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                               ),
                               alignment: Alignment.center,
                               child: Text(
-                                _stores[index].phone,
+                                CarStation.carStations[index].openState
+                                    ? 'مفتوح'
+                                    : 'مغلق',
                                 textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color:
+                                        CarStation.carStations[index].openState
+                                            ? Colors.black
+                                            : Colors.white),
                               ),
                             ),
                           );
                         },
                         separatorBuilder: (context, index) => Divider(),
-                        itemCount: _stores.length),
+                        itemCount: CarStation.carStations.length),
                     ListView.separated(
                         itemBuilder: (context, index) {
                           return ListTile(
-                            leading: Image.network(
-                              _newStores[index].gravatar,
+                            leading: Image(
+                              image: AssetImage(
+                                CarStation.carStations[index].imageURL,
+                              ),
                               height: 65,
                               width: 65,
                               fit: BoxFit.contain,
                             ),
-                            title: Text(_newStores[index].storeName),
+                            title:
+                                Text(CarStation.carStations[index].stationName),
                             trailing: Container(
-                              width: 100.0,
+                              width: 80.0,
                               height: 32.0,
                               decoration: BoxDecoration(
-                                color: StyleRso.secondaryLightColor,
+                                color: CarStation.carStations[index].openState
+                                    ? Colors.amber
+                                    : Colors.red,
                                 borderRadius: BorderRadius.only(
                                   bottomRight: Radius.circular(17.0),
                                   bottomLeft: Radius.circular(17.0),
@@ -185,14 +181,21 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                               ),
                               alignment: Alignment.center,
                               child: Text(
-                                _newStores[index].phone,
+                                CarStation.carStations[index].openState
+                                    ? 'مفتوح'
+                                    : 'مغلق',
                                 textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color:
+                                        CarStation.carStations[index].openState
+                                            ? Colors.black
+                                            : Colors.white),
                               ),
                             ),
                           );
                         },
                         separatorBuilder: (context, index) => Divider(),
-                        itemCount: _newStores.length),
+                        itemCount: CarStation.carStations.length),
                   ],
                   controller: _tabController,
                 ),
@@ -203,4 +206,63 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       ),
     );
   }
+}
+
+class CarStation {
+  String stationName;
+  String imageURL;
+  bool openState;
+
+  CarStation({this.stationName, this.imageURL, this.openState});
+
+  static List<CarStation> get carStations => [
+    CarStation(
+            stationName: 'معرض الناصر كارس',
+            imageURL: 'assets/alnasrCars.jpg',
+            openState: true),
+    CarStation(
+            stationName: 'معرض الأندلس للسيارات',
+            imageURL: 'assets/andalusCars.jpg',
+            openState: false),
+    CarStation(
+            stationName: 'معرض DRC للسيارات',
+            imageURL: 'assets/drcCars.jpg',
+            openState: true),
+    CarStation(
+            stationName: 'معرض OTO Show للسيارات',
+            imageURL: 'assets/otoshowCars.jpg',
+            openState: false),
+    CarStation(
+        stationName: 'معرض الناصر كارس',
+        imageURL: 'assets/alnasrCars.jpg',
+        openState: true),
+    CarStation(
+        stationName: 'معرض الأندلس للسيارات',
+        imageURL: 'assets/andalusCars.jpg',
+        openState: false),
+    CarStation(
+        stationName: 'معرض DRC للسيارات',
+        imageURL: 'assets/drcCars.jpg',
+        openState: true),
+    CarStation(
+        stationName: 'معرض OTO Show للسيارات',
+        imageURL: 'assets/otoshowCars.jpg',
+        openState: false),
+    CarStation(
+        stationName: 'معرض الناصر كارس',
+        imageURL: 'assets/alnasrCars.jpg',
+        openState: true),
+    CarStation(
+        stationName: 'معرض الأندلس للسيارات',
+        imageURL: 'assets/andalusCars.jpg',
+        openState: false),
+    CarStation(
+        stationName: 'معرض DRC للسيارات',
+        imageURL: 'assets/drcCars.jpg',
+        openState: true),
+    CarStation(
+        stationName: 'معرض OTO Show للسيارات',
+        imageURL: 'assets/otoshowCars.jpg',
+        openState: false),
+      ];
 }
