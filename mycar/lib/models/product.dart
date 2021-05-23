@@ -1,231 +1,140 @@
 import 'dart:convert';
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'product.g.dart';
+
 List<Product> productListFromJson(String str) => List<Product>.from(json.decode(str).map((x)=>Product.fromJson(x)));
 
-class Product{
+@JsonSerializable()
+class Product {
+
   int id;
   String name;
+  String slug;
+  String permalink;
+  @JsonKey(name: 'date_created') String dateCreated;
+  @JsonKey(name: 'date_created_gmt') String dateCreatedGmt;
+  @JsonKey(name: 'date_modified') String dateModified;
+  @JsonKey(name: 'date_modified_gmt') String dateModifiedGmt;
   String type;
   String status;
   bool featured;
-  String catalogVisibility;
+  @JsonKey(name: 'catalog_visibility') String catalogVisibility;
   String description;
-  String shortDescription;
-  String permalink;
+  @JsonKey(name: 'short_description') String shortDescription;
   String sku;
   String price;
-  double regularPrice;
-  double salePrice;
-  //DateTime dateOnSaleFromGmt;
-  //DateTime dateOnSaleToGmt;
-  bool onSale;
+  @JsonKey(name: 'regular_price') String regularPrice;
+  @JsonKey(name: 'sale_price') String salePrice;
+  @JsonKey(name: 'on_sale') bool onSale;
   bool purchasable;
-  int totalSales;
+  @JsonKey(name: 'total_sales') int totalSales;
   bool virtual;
   bool downloadable;
-  String externalUrl;
-  String buttonText;
-  bool manageStock;
-  int stockQuantity;
-  String stockStatus;
+  @JsonKey(name: 'download_limit') int downloadLimit;
+  @JsonKey(name: 'download_expiry') int downloadExpiry;
+  @JsonKey(name: 'external_url') String externalUrl;
+  @JsonKey(name: 'button_text') String buttonText;
+  @JsonKey(name: 'tax_status') String taxStatus;
+  @JsonKey(name: 'tax_class') String taxClass;
+  @JsonKey(name: 'manage_stock') bool manageStock;
   String backorders;
-  bool backordersAllowed;
+  @JsonKey(name: 'backorders_allowed') bool backordersAllowed;
   bool backordered;
-  bool soldIndividually;
+  @JsonKey(name: 'sold_individually') bool soldIndividually;
   String weight;
-  //Dimensions dimensions;
-  //bool shippingRequired;
-  //bool shippingTaxable;
-  //String shippingClass;
-  bool reviewsAllowed;
-  String averageRating;
-  int ratingCount;
-  List<int> relatedIds;
-  List<int> upsellIds;
-  List<int> crossSellIds;
-  //int parentId;
-  String purchaseNote;
-  List<int> categories;
-  List<dynamic> tags;
-  List<Image> images;
-  //List<Attribute> attributes;
-  List<dynamic> groupedProducts;
-  //int menuOrder;
-  List<MetaData> metaData;
-  //String storeName;
-  //List<AvailableVariation> availableVariations;
-  //List<VariationOption> variationOptions;
-  String variationId;
-  String formattedPrice;
-  String formattedSalesPrice;
-  Vendor vendor;
-  List<Product> children;
+  Dimensions dimensions;
+  @JsonKey(name: 'shipping_required') bool shippingRequired;
+  @JsonKey(name: 'shipping_taxable') bool shippingTaxable;
+  @JsonKey(name: 'shipping_class') String shippingClass;
+  @JsonKey(name: 'shipping_class_id') int shippingClassId;
+  @JsonKey(name: 'reviews_allowed') bool reviewsAllowed;
+  @JsonKey(name: 'average_rating') String averageRating;
+  @JsonKey(name: 'rating_count') int ratingCount;
+  @JsonKey(name: 'parent_id') int parentId;
+  @JsonKey(name: 'purchase_note') String purchaseNote;
+  List<Categories> categories;
+  List<ImageMdl> images;
+  @JsonKey(name: 'menu_order') int menuOrder;
+  @JsonKey(name: 'price_html') String priceHtml;
+  @JsonKey(name: 'stock_status') String stockStatus;
+  StorePrdct store;
 
-  Product({
-    this.id,
-    this.name,
-    this.type,
-    this.status,
-    this.featured,
-    this.catalogVisibility,
-    this.description,
-    this.shortDescription,
-    this.permalink,
-    this.sku,
-    this.price,
-    this.regularPrice,
-    this.salePrice,
-    //this.dateOnSaleFromGmt,
-    //this.dateOnSaleToGmt,
-    this.onSale,
-    this.purchasable,
-    this.totalSales,
-    this.virtual,
-    this.downloadable,
-    this.externalUrl,
-    this.buttonText,
-    this.manageStock,
-    this.stockQuantity,
-    this.stockStatus,
-    this.backorders,
-    this.backordersAllowed,
-    this.backordered,
-    this.soldIndividually,
-    this.weight,
-    //this.dimensions,
-    //this.shippingRequired,
-    //this.shippingTaxable,
-    //this.shippingClass,
-    this.reviewsAllowed,
-    this.averageRating,
-    this.ratingCount,
-    this.relatedIds,
-    this.upsellIds,
-    this.crossSellIds,
-    //this.parentId,
-    this.purchaseNote,
-    this.categories,
-    this.tags,
-    this.images,
-    //this.attributes,
-    this.groupedProducts,
-    //this.menuOrder,
-    this.metaData,
-    //this.storeName,
-    //this.availableVariations,
-    //this.variationOptions,
-    this.variationId,
-    this.formattedPrice,
-    this.formattedSalesPrice,
-    this.vendor,
-    this.children
-  });
+  Product(
+      {this.id,
+      this.name,
+      this.slug,
+      this.permalink,
+      this.dateCreated,
+      this.dateCreatedGmt,
+      this.dateModified,
+      this.dateModifiedGmt,
+      this.type,
+      this.status,
+      this.featured,
+      this.catalogVisibility,
+      this.description,
+      this.shortDescription,
+      this.sku,
+      this.price,
+      this.regularPrice,
+      this.salePrice,
+      this.onSale,
+      this.purchasable,
+      this.totalSales,
+      this.virtual,
+      this.downloadable,
+      this.downloadLimit,
+      this.downloadExpiry,
+      this.externalUrl,
+      this.buttonText,
+      this.taxStatus,
+      this.taxClass,
+      this.manageStock,
+      this.backorders,
+      this.backordersAllowed,
+      this.backordered,
+      this.soldIndividually,
+      this.weight,
+      this.dimensions,
+      this.shippingRequired,
+      this.shippingTaxable,
+      this.shippingClass,
+      this.shippingClassId,
+      this.reviewsAllowed,
+      this.averageRating,
+      this.ratingCount,
+      this.parentId,
+      this.purchaseNote,
+      this.categories,
+      this.images,
+      this.menuOrder,
+      this.priceHtml,
+      this.stockStatus,
+      this.store});
 
-  factory Product.fromJson(Map<String,dynamic> json)=> Product(
-    id: json["id"] == null ? null : json["id"],
-    name: json["name"] == null ? null : json["name"],
-    type: json["type"] == null ? null : json["type"],
-    status: json["status"] == null ? null : json["status"],
-    featured: json["featured"] == null ? null : json["featured"],
-    catalogVisibility: json["catalog_visibility"] == null ? null : json["catalog_visibility"],
-    description: json["description"] == null ? null : json["description"],
-    shortDescription: json["short_description"] == null ? null : json["short_description"],
-    permalink: json["permalink"] == null ? null : json["permalink"],
-    sku: json["sku"] == null ? null : json["sku"],
-    formattedPrice: json["formated_price"] == null ? null : json["formated_price"],
-    formattedSalesPrice: json["formated_sales_price"] == null ? null : json["formated_sales_price"],
-    price: json["price"] == null ? null : json["price"],
-    //regularPrice: json["regular_price"] == null ? null : double.parse(json["regular_price"]),
-    //salePrice: json["sale_price"] == null ? null : double.parse(json["sale_price"]),
-    //dateOnSaleFromGmt: json["date_on_sale_from_gmt"] == null ? null : DateTime.parse(json["date_on_sale_from_gmt"]),
-    //dateOnSaleToGmt: json["date_on_sale_to_gmt"] == null ? null : DateTime.parse(json["date_on_sale_to_gmt"]),
-    onSale: json["on_sale"] == null ? null : json["on_sale"],
-    purchasable: json["purchasable"] == null ? null : json["purchasable"],
-    totalSales: json["total_sales"] == null ? null : json["total_sales"],
-    virtual: json["virtual"] == null ? null : json["virtual"],
-    downloadable: json["downloadable"] == null ? null : json["downloadable"],
-    externalUrl: json["external_url"] == null ? null : json["external_url"],
-    buttonText: json["button_text"] == null ? null : json["button_text"],
-    manageStock: json["manage_stock"] == null ? null : json["manage_stock"],
-    stockQuantity: json["stock_quantity"] == null ? null : json["stock_quantity"],
-    stockStatus: json["stock_status"] == null ? null : json["stock_status"],
-    backorders: json["backorders"] == null ? null : json["backorders"],
-    backordersAllowed: json["backorders_allowed"] == null ? null : json["backorders_allowed"],
-    backordered: json["backordered"] == null ? null : json["backordered"],
-    soldIndividually: json["sold_individually"] == null ? null : json["sold_individually"],
-    weight: json["weight"] == null ? null : json["weight"],
-    //dimensions: json["dimensions"] == null ? null : Dimensions.fromJson(json["dimensions"]),
-    //shippingRequired: json["shipping_required"] == null ? null : json["shipping_required"],
-    //shippingTaxable: json["shipping_taxable"] == null ? null : json["shipping_taxable"],
-    //shippingClass: json["shipping_class"] == null ? null : json["shipping_class"],
-    reviewsAllowed: json["reviews_allowed"] == null ? null : json["reviews_allowed"],
-    averageRating: json["average_rating"] == null ? null : json["average_rating"],
-    ratingCount: json["rating_count"] == null ? null : json["rating_count"],
-    relatedIds: json["related_ids"] == null ? null : List<int>.from(json["related_ids"].map((x) => x)),
-    upsellIds: json["upsell_ids"] == null ? null : List<int>.from(json["upsell_ids"].map((x) => x)),
-    crossSellIds: json["cross_sell_ids"] == null ? null : List<int>.from(json["cross_sell_ids"].map((x) => x)),
-    //parentId: json["parent_id"] == null ? null : json["parent_id"],
-    purchaseNote: json["purchase_note"] == null ? null : json["purchase_note"],
-    categories: json["categories"] == null ? [] :  List<int>.from(json["categories"].map((x) => x)),
-    tags: json["tags"] == null ? null : List<dynamic>.from(json["tags"].map((x) => x)),
-    images: json["images"] == null ? null : List<Image>.from(json["images"].map((x) => Image.fromJson(x))),
-    //attributes: json["attributes"] == null ? null : List<Attribute>.from(json["attributes"].map((x) => Attribute.fromJson(x))),
-    groupedProducts: json["grouped_products"] == null ? null : List<dynamic>.from(json["grouped_products"].map((x) => x)),
-    //menuOrder: json["menu_order"] == null ? null : json["menu_order"],
-    metaData: json["meta_data"] == null ? null : List<MetaData>.from(json["meta_data"].map((x) => MetaData.fromJson(x))),
-    //storeName: json["store_name"] == null ? null : json["store_name"],
-    //availableVariations: json["availableVariations"] == null ? null : List<AvailableVariation>.from(json["availableVariations"].map((x) => AvailableVariation.fromJson(x))),
-    //variationOptions: json["variationOptions"] == null ? null : List<VariationOption>.from(json["variationOptions"].map((x) => VariationOption.fromJson(x))),
-    variationId: null,
-    vendor: json["store"] == null ? null : Vendor.fromJson(json["store"]),
-    children: json['children'] == null ? null : List<Product>.from(json["children"].map((x) => Product.fromJson(x))),);
+  factory Product.fromJson(Map<String,dynamic> json) => _$ProductFromJson(json);
+  Map<String, dynamic> toJson() => _$ProductToJson(this);
 
   @override
   String toString() {
-    return 'Product{id: $id, name: $name, type: $type, status: $status, featured: $featured, catalogVisibility: $catalogVisibility, description: $description, shortDescription: $shortDescription, permalink: $permalink, sku: $sku, price: $price, regularPrice: $regularPrice, salePrice: $salePrice, onSale: $onSale, purchasable: $purchasable, totalSales: $totalSales, virtual: $virtual, downloadable: $downloadable, externalUrl: $externalUrl, buttonText: $buttonText, manageStock: $manageStock, stockQuantity: $stockQuantity, stockStatus: $stockStatus, backorders: $backorders, backordersAllowed: $backordersAllowed, backordered: $backordered, soldIndividually: $soldIndividually, weight: $weight, reviewsAllowed: $reviewsAllowed, averageRating: $averageRating, ratingCount: $ratingCount, relatedIds: $relatedIds, upsellIds: $upsellIds, crossSellIds: $crossSellIds, purchaseNote: $purchaseNote, categories: $categories, tags: $tags, images: ${images==null?'':images.toString()}, groupedProducts: $groupedProducts, metaData: ${metaData==null?'':metaData.toString()}, variationId: $variationId, formattedPrice: $formattedPrice, formattedSalesPrice: $formattedSalesPrice, vendor: ${vendor==null?'':vendor.toString()}, children: $children}';
+    return 'Product{id: $id, name: $name, slug: $slug, permalink: $permalink, dateCreated: $dateCreated, dateCreatedGmt: $dateCreatedGmt, dateModified: $dateModified, dateModifiedGmt: $dateModifiedGmt, type: $type, status: $status, featured: $featured, catalogVisibility: $catalogVisibility, description: $description, shortDescription: $shortDescription, sku: $sku, price: $price, regularPrice: $regularPrice, salePrice: $salePrice, onSale: $onSale, purchasable: $purchasable, totalSales: $totalSales, virtual: $virtual, downloadable: $downloadable, downloadLimit: $downloadLimit, downloadExpiry: $downloadExpiry, externalUrl: $externalUrl, buttonText: $buttonText, taxStatus: $taxStatus, taxClass: $taxClass, manageStock: $manageStock, backorders: $backorders, backordersAllowed: $backordersAllowed, backordered: $backordered, soldIndividually: $soldIndividually, weight: $weight, dimensions: ${dimensions.toString()}, shippingRequired: $shippingRequired, shippingTaxable: $shippingTaxable, shippingClass: $shippingClass, shippingClassId: $shippingClassId, reviewsAllowed: $reviewsAllowed, averageRating: $averageRating, ratingCount: $ratingCount, parentId: $parentId, purchaseNote: $purchaseNote, categories: ${categories==null?'':categories.map((e) => e.toString()).toString()}, images: ${images==null?'':images.map((e) => e.toString()).toString()}, menuOrder: $menuOrder, priceHtml: $priceHtml, stockStatus: $stockStatus, store: ${store==null?'':store.toString()}}';
   }
 }
 
-class Vendor {
-  dynamic id;
-  String name;
-  String icon;
-
-  Vendor({
-    this.id,
-    this.name,
-    this.icon,
-  });
-
-  factory Vendor.fromJson(Map<String, dynamic> json) => Vendor(
-    id: json["id"],
-    name: json["name"] == null ? null : json["name"],
-    icon: json["icon"] == null || json["icon"] == false ? null : json["icon"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name == null ? null : name,
-    "icon": icon == null ? null : icon,
-  };
-
-  @override
-  String toString() {
-    return 'Vendor{id: $id, name: $name, icon: $icon}';
-  }
-}
-
-class Image {
+@JsonSerializable()
+class ImageMdl {
   int id;
-  DateTime dateCreated;
-  DateTime dateCreatedGmt;
-  DateTime dateModified;
-  DateTime dateModifiedGmt;
+  @JsonKey(name: 'date_created') DateTime dateCreated;
+  @JsonKey(name: 'date_created_gmt') DateTime dateCreatedGmt;
+  @JsonKey(name: 'date_modified') DateTime dateModified;
+  @JsonKey(name: 'date_modified_gmt') DateTime dateModifiedGmt;
   String src;
   String name;
   String alt;
 
-  Image({
+  ImageMdl({
     this.id,
     this.dateCreated,
     this.dateCreatedGmt,
@@ -236,27 +145,9 @@ class Image {
     this.alt,
   });
 
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
-    id: json["id"] == null ? null : json["id"],
-    dateCreated: json["date_created"] == null ? null : DateTime.parse(json["date_created"]),
-    dateCreatedGmt: json["date_created_gmt"] == null ? null : DateTime.parse(json["date_created_gmt"]),
-    dateModified: json["date_modified"] == null ? null : DateTime.parse(json["date_modified"]),
-    dateModifiedGmt: json["date_modified_gmt"] == null ? null : DateTime.parse(json["date_modified_gmt"]),
-    src: json["src"] == null ? null : json["src"],
-    name: json["name"] == null ? null : json["name"],
-    alt: json["alt"] == null ? null : json["alt"],
-  );
+  factory ImageMdl.fromJson(Map<String, dynamic> json) => _$ImageMdlFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-    "id": id == null ? null : id,
-    "date_created": dateCreated == null ? null : dateCreated.toIso8601String(),
-    "date_created_gmt": dateCreatedGmt == null ? null : dateCreatedGmt.toIso8601String(),
-    "date_modified": dateModified == null ? null : dateModified.toIso8601String(),
-    "date_modified_gmt": dateModifiedGmt == null ? null : dateModifiedGmt.toIso8601String(),
-    "src": src == null ? null : src,
-    "name": name == null ? null : name,
-    "alt": alt == null ? null : alt,
-  };
+  Map<String, dynamic> toJson() => _$ImageMdlToJson(this);
 
   @override
   String toString() {
@@ -264,31 +155,55 @@ class Image {
   }
 }
 
-class MetaData {
-  int id;
-  String key;
-  dynamic value;
+@JsonSerializable()
+class Dimensions {
 
-  MetaData({
-    this.id,
-    this.key,
-    this.value,
-  });
+  String length;
+  String width;
+  String height;
 
-  factory MetaData.fromJson(Map<String, dynamic> json) => MetaData(
-    id: json["id"] == null ? null : json["id"],
-    key: json["key"] == null ? null : json["key"],
-    value: json["value"],
-  );
+  Dimensions({this.length, this.width, this.height});
 
-  Map<String, dynamic> toJson() => {
-    "id": id == null ? null : id,
-    "key": key == null ? null : key,
-    "value": value,
-  };
+  factory Dimensions.fromJson(Map<String,dynamic> json) => _$DimensionsFromJson(json);
+  Map<String, dynamic> toJson() => _$DimensionsToJson(this);
 
   @override
   String toString() {
-    return 'MetaData{id: $id, key: $key, value: $value}';
+    return 'Dimensions{length: $length, width: $width, height: $height}';
+  }
+}
+
+@JsonSerializable()
+class StorePrdct {
+  int id;
+  String name;
+  @JsonKey(name: 'shop_name') String shopName;
+  String url;
+
+  StorePrdct({this.id, this.name, this.shopName, this.url});
+
+  factory StorePrdct.fromJson(Map<String,dynamic> json) => _$StoreFromJson(json);
+  Map<String, dynamic> toJson() => _$StoreToJson(this);
+
+  @override
+  String toString() {
+    return 'Store{id: $id, name: $name, shopName: $shopName, url: $url}';
+  }
+}
+
+@JsonSerializable()
+class Categories {
+  int id;
+  String name;
+  String slug;
+
+  Categories({this.id, this.name, this.slug});
+
+  factory Categories.fromJson(Map<String,dynamic> json) => _$CategoriesFromJson(json);
+  Map<String, dynamic> toJson() => _$CategoriesToJson(this);
+
+  @override
+  String toString() {
+    return 'Categories{id: $id, name: $name, slug: $slug}';
   }
 }

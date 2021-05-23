@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mycar/models/store.dart';
 import 'package:mycar/services/store_srv.dart';
-import 'package:mycar/ui/style_res.dart';
+import 'package:mycar/ui/components/store_card.dart';
+import 'package:mycar/ui/store_page.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -12,8 +13,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   TabController _tabController;
   final StoreServices _storeServices = StoreServices();
 
-  List<Store> _stores = [];
-  List<Store> _newStores = [];
+  List<Store> stores = [];
+  List<Store> newStores = [];
 
   @override
   void initState() {
@@ -25,8 +26,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     _storeServices.getAllStores().then((value) {
       //value.map((e) => print(e.toString())).toList();
       setState(() {
-        _stores = value;
-        _newStores = value
+        stores = value;
+        newStores = value
             .where((store) => DateTime.parse(store.registered).isAfter(earlier))
             .toList();
       });
@@ -135,64 +136,22 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                   children: [
                     ListView.separated(
                         itemBuilder: (context, index) {
-                          return ListTile(
-                            leading: Image.network(
-                              _stores[index].gravatar,
-                              height: 65,
-                              width: 65,
-                              fit: BoxFit.contain,
-                            ),
-                            title: Text(_stores[index].storeName),
-                            trailing: Container(
-                              width: 100.0,
-                              height: 32.0,
-                              decoration: BoxDecoration(
-                                color: StyleRso.secondaryLightColor,
-                                borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(17.0),
-                                  bottomLeft: Radius.circular(17.0),
-                                ),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                _stores[index].phone,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
+                          return StoreCard(
+                            store: stores[index],
+                            onTapStore: _onTapStore,
                           );
                         },
                         separatorBuilder: (context, index) => Divider(),
-                        itemCount: _stores.length),
+                        itemCount: stores.length),
                     ListView.separated(
                         itemBuilder: (context, index) {
-                          return ListTile(
-                            leading: Image.network(
-                              _newStores[index].gravatar,
-                              height: 65,
-                              width: 65,
-                              fit: BoxFit.contain,
-                            ),
-                            title: Text(_newStores[index].storeName),
-                            trailing: Container(
-                              width: 100.0,
-                              height: 32.0,
-                              decoration: BoxDecoration(
-                                color: StyleRso.secondaryLightColor,
-                                borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(17.0),
-                                  bottomLeft: Radius.circular(17.0),
-                                ),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                _newStores[index].phone,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
+                          return StoreCard(
+                            store: newStores[index],
+                            onTapStore: _onTapStore,
                           );
                         },
                         separatorBuilder: (context, index) => Divider(),
-                        itemCount: _newStores.length),
+                        itemCount: newStores.length),
                   ],
                   controller: _tabController,
                 ),
@@ -202,5 +161,10 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
         ),
       ),
     );
+  }
+
+  _onTapStore(Store store) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => StorePage(store: store)));
   }
 }

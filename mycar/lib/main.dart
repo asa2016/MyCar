@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mycar/main_page.dart';
+import 'file:///D:/Projects/MyCar/Repo/mycar/lib/ui/main_page.dart';
 import 'package:mycar/test_widget.dart';
 
 void main() {

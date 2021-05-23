@@ -1,3 +1,4 @@
+
 import 'package:mycar/models/product.dart';
 import 'package:mycar/settings.dart';
 import 'api_services.dart';
@@ -12,4 +13,10 @@ class ProductServices {
     return productListFromJson(response);
   }
 
+  Future<List<Product>> getAllStoreProducts(int id) async {
+    String response = await _apiServices.get(settings.wcUrl+_endPoint, true);
+    return productListFromJson(response);
+  }
+
 }
+

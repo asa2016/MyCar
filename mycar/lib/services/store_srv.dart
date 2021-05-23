@@ -1,5 +1,5 @@
 import 'package:mycar/models/store.dart';
-import '../settings.dart';
+import 'package:mycar/settings.dart';
 import 'api_services.dart';
 
 class StoreServices {
